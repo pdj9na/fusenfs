@@ -1,0 +1,131 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "(gdb) 生成",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask":"build",
+            "program": "",
+            //"stopAtEntry": true,
+            //"launchCompleteCommand":"None",
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+        },
+        {
+            "name": "(gdb) smb仅启动",
+            "type": "cppdbg",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "environment": [{ "name": "LD_LIBRARY_PATH","value": "$LD_LIBRARY_PATH:fuse/.libs"}],
+            "postDebugTask": "end",
+            "program": "${workspaceFolder}/fuse/.libs/fusenfs",
+            //"args": [ "-h" ],
+            //"args": [ "--help" ],
+            // "args": [
+            //     "-odebug,allow_other,fsname=smb://admin@192.168.0.10:36285/test?credentials=/root/文档/credentials.txt'&'vers=2",
+			// 	"/mnt/nfs_test"
+			// 	//,"-ologfile=/root/文档/fusenfs.log"
+            // ],
+			"args": [
+                "-odebug,allow_other,fsname=smb://admin@192.168.0.10/test?password=***",
+				"/mnt/nfs_test"
+            ],
+			
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) nfs仅启动",
+            "type": "cppdbg",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "environment": [{ "name": "LD_LIBRARY_PATH","value": "$LD_LIBRARY_PATH:fuse/.libs"}],
+            "postDebugTask": "end",
+            "program": "${workspaceFolder}/fuse/.libs/fusenfs",
+            //"args": [ "-h" ],
+            //"args": [ "--help" ],
+			"args": [
+				"-odebug,allow_other,fsname=nfs://192.168.0.66/accnum",
+				"/mnt/nfs_test"
+			],
+            // /mnt/nfs_test   -oallow_other,fsname=nfs://192.168.0.66/accnum
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "MIMode": "gdb",
+            //"MIMode": "lldb",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) bind仅启动",
+            "type": "cppdbg",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "environment": [{ "name": "LD_LIBRARY_PATH","value": "$LD_LIBRARY_PATH:fuse/.libs"}],
+            "postDebugTask": "end",
+            "program": "${workspaceFolder}/fuse/.libs/fusenfs",
+            //"args": [ "-h" ],
+            //"args": [ "--help" ],
+            //"args": [ "-odebug,allow_other,fsname=/mnt/fusesubdir_src","/mnt/fusesubdir_dest"],
+			"args": [
+				"-odebug,allow_other,fsname=/mnt/fusesubdir_src",
+				"/mnt/nfs_test"
+			],
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) _nfs仅启动",
+            "type": "cppdbg",
+            "request": "launch",
+            "environment": [{ "name": "LD_LIBRARY_PATH",
+                "value": "$LD_LIBRARY_PATH:../libnfs/lib/.libs:../libfuse/lib/.libs:../libsmb2/lib/.libs"}
+            ],
+            "postDebugTask": "end",
+            "program": "${workspaceFolder}/fuse/.libs/fuse_nfs",
+            //"args": [ "--help" ],
+            "args": [
+                "-n","nfs://192.168.0.66/accnum",
+                "-m","/mnt/nfs_test",
+                "-aD"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

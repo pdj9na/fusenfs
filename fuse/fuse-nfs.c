@@ -18,9 +18,10 @@
 /* A FUSE filesystem based on libnfs. */
 
 #define FUSE_USE_VERSION 26
-#define _FILE_OFFSET_BITS 64
 
-#include "../config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <fuse.h>
 #include <stdio.h>
@@ -104,14 +105,14 @@ static int map_gid(int possible_gid) {
     return possible_gid;
 }
 
-static int map_reverse_uid(int possible_uid) {
+static uid_t map_reverse_uid(uid_t possible_uid) {
     if (custom_uid != -1 && possible_uid == getuid()) {
         return custom_uid;
     }
     return possible_uid;
 }
 
-static int map_reverse_gid(int possible_gid) {
+static gid_t map_reverse_gid(gid_t possible_gid) {
     if (custom_gid != -1 && possible_gid == getgid()){
         return custom_gid;
     }
@@ -285,10 +286,10 @@ fuse_nfs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 
 	LOG("fuse_nfs_readdir entered [%s]\n", path);
 
-        memset(&cb_data, 0, sizeof(struct sync_cb_data));
+    memset(&cb_data, 0, sizeof(struct sync_cb_data));
 
 	pthread_mutex_lock(&nfs_mutex);
-        update_rpc_credentials();
+    update_rpc_credentials();
 	ret = nfs_opendir_async(nfs, path, readdir_cb, &cb_data);
 	pthread_mutex_unlock(&nfs_mutex);
 	if (ret < 0) {
@@ -888,7 +889,7 @@ void print_usage(char *name)
 			"\t [-f FSNAME|--fsname=FSNAME] \n"
 			"\t\t Default is the SHARE provided with -m \n"
 			"\t [-s SUBTYPE|--subtype=SUBTYPE] \n"
-			"\t\t Default is fuse-nfs with kernel prefexing with fuse. \n"
+			"\t\t Default is fusenfs with kernel prefexing with fuse. \n"
 			"\t [-b|--blkdev] \n"
 			"\t [-D|--debug] \n"
 			"\t [-i|--intr] \n"
@@ -971,7 +972,7 @@ int main(int argc, char *argv[])
 
 	int fuse_nfs_argc = 2;
 	char *fuse_nfs_argv[34] = {
-		"fuse-nfs",
+		"fusenfs",
 		"<export>",
 		NULL,
 		NULL,
@@ -1155,7 +1156,7 @@ int main(int argc, char *argv[])
 	if (fusenfs_allow_other_own_ids)
 	{
 		int i = 0, allow_other_set=0;
-		for(i ; i < fuse_nfs_argc; ++i)
+		for(; i < fuse_nfs_argc; ++i)
 		{
 			if(!strcmp(fuse_nfs_argv[i], "-oallow_other"))
 			{
@@ -1176,7 +1177,7 @@ int main(int argc, char *argv[])
 	/* Set default subtype if not defined */
 	if (!strstr(fuse_subtype_arg, "-osubtype="))
 	{
-		snprintf(fuse_subtype_arg, sizeof(fuse_subtype_arg), "-osubtype=%s", "fuse-nfs");
+		snprintf(fuse_subtype_arg, sizeof(fuse_subtype_arg), "-osubtype=%s", "fusenfs");
 		fuse_nfs_argv[fuse_nfs_argc++] = fuse_subtype_arg;
 	}
 
@@ -1204,8 +1205,8 @@ int main(int argc, char *argv[])
 		goto finished;
 	}
 
-	if (idstr = strstr(url, "uid=")) { custom_uid = atoi(&idstr[4]); }
-	if (idstr = strstr(url, "gid=")) { custom_gid = atoi(&idstr[4]); }
+	if ((idstr = strstr(url, "uid="))) { custom_uid = atoi(&idstr[4]); }
+	if ((idstr = strstr(url, "gid="))) { custom_gid = atoi(&idstr[4]); }
 
 	#ifdef WIN32
 	WSADATA wsaData;

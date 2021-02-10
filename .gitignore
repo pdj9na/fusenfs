@@ -1,0 +1,11 @@
+/*
+!.gitignore
+!.vscode
+.vscode/.changeTime_files
+
+!/fuse
+
+!configure.ac
+!Makefile.am
+!README
+!setup.sh

@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "include",
+                "../libfuse/include",
+                "../libnfs/include",
+                "../libsmb2/include",
+                "../libsmb2/include/smb2"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            
+            "cStandard": "gnu11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}
