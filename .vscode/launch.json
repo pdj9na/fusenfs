@@ -26,15 +26,15 @@
             "program": "${workspaceFolder}/fuse/.libs/fusenfs",
             //"args": [ "-h" ],
             //"args": [ "--help" ],
-            // "args": [
-            //     "-odebug,allow_other,fsname=smb://admin@192.168.0.10:36285/test?credentials=/root/文档/credentials.txt'&'vers=2",
-			// 	"/mnt/nfs_test"
-			// 	//,"-ologfile=/root/文档/fusenfs.log"
-            // ],
-			"args": [
-                "-odebug,allow_other,fsname=smb://admin@192.168.0.10/test?password=***",
+            "args": [
+                "-odebug,allow_other,fsname=smb://admin@192.168.0.10:36285/test?credentials=/root/文档/credentials.txt'&'vers=3",
 				"/mnt/nfs_test"
+				//,"-ologfile=/root/文档/fusenfs.log"
             ],
+			// "args": [
+            //     "-odebug,allow_other,fsname=smb://admin@192.168.0.10/test?password=***",
+			// 	"/mnt/nfs_test"
+            // ],
 			
             "stopAtEntry": false,
             "externalConsole": false,
